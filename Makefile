@@ -5,3 +5,5 @@ generate:
 
 all: generate
 	go build -o challenge-client ./cmd
+	go build -o challenge-server ./pkg/server
+	./challenge-server &
