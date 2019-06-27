@@ -15,9 +15,9 @@ func main() {
 	srv := grpc.NewServer()
 	var server reverseServer
 	generated.RegisterStringmanipServer(srv, server)
-	l, err := net.Listen("tcp", ":5001")
+	l, err := net.Listen("tcp", ":50001")
 	if err != nil {
-		log.Fatalf("could not listen to port :5001: %v", err)
+		log.Fatalf("could not listen to port :50001: %v", err)
 	}
 	log.Fatal(srv.Serve(l))
 }
