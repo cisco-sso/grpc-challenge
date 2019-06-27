@@ -1,22 +1,38 @@
 package main
 
-import "fmt"
+import (
+	"context"
+	"log"
+	"net"
+
+	"github.com/cisco-sso/grpc-challenge/pkg/generated"
+	"google.golang.org/grpc"
+)
+
+type reverseServer struct{}
 
 func main() {
-	// srv := grpc.NewServer()
-	input := "One small step for man"
-	fmt.Println(Reverse(input))
+	srv := grpc.NewServer()
+	var server reverseServer
+	generated.RegisterStringmanipServer(srv, server)
+	l, err := net.Listen("tcp", ":5001")
+	if err != nil {
+		log.Fatalf("could not listen to port :5001: %v", err)
+	}
+	log.Fatal(srv.Serve(l))
+	// input := "One small step for man"
+	// fmt.Println(Reverse(input))
 }
-
-// type reverseServer struct{}
 
 // Reverse takes a string and returns the reverse
 //ex: "One small step for man" -> "nam rof pets llams enO"
-func Reverse(ctx context.Context s string) string {
-	a := []rune(s)
+func (reverseServer) Reversed(ctx context.Context, s *generated.StringRequest) (*generated.StringResponse, error) {
+	a := []rune(s.Content)
 	for i := len(a)/2 - 1; i >= 0; i-- {
 		opp := len(a) - 1 - i
 		a[i], a[opp] = a[opp], a[i]
 	}
-	return string(a)
+	resp := new(generated.StringResponse)
+	resp.Content = string(a)
+	return resp, nil
 }
