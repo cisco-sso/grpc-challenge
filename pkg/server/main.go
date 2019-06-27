@@ -20,8 +20,6 @@ func main() {
 		log.Fatalf("could not listen to port :5001: %v", err)
 	}
 	log.Fatal(srv.Serve(l))
-	// input := "One small step for man"
-	// fmt.Println(Reverse(input))
 }
 
 // Reverse takes a string and returns the reverse
